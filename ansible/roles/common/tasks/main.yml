@@ -1,0 +1,22 @@
+---
+- name: Update apt cache
+  sudo: true
+  apt: update_cache=yes
+  tags:
+    - packages
+
+- name: Install base packages
+  sudo: true
+  apt: name={{ item }} state=present
+  with_items: "{{ packages }}"
+  tags:
+    - packages
+
+- include: configure_code_directory.yml
+- include: configure_monit.yml
+- include: make_bash_profile.yml
+- include: apt_repos.yml
+- include: configure_rbenv.yml
+- include: ruby_gems.yml
+- include: restart.yml
+

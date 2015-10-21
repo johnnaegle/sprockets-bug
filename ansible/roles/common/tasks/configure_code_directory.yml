@@ -1,0 +1,11 @@
+---
+- name: give permissions to /mnt
+  shell: "chown -R {{ ansible_ssh_user }} /mnt"
+
+- name: make code directory
+  file:
+    path: /mnt/code
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+    mode: 0775
+    state: directory

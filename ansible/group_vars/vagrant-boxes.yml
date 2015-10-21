@@ -1,0 +1,3 @@
+---
+rails_env: vagrant
+domain_name: sprockets-master

@@ -1,0 +1,29 @@
+---
+
+- name: Install Monit
+  sudo: true
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - monit
+  tags:
+    - monit
+
+- name: Configure monit
+  sudo: true
+  copy:
+    src: monit.conf
+    dest: /etc/monit/conf.d/monit.conf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  notify:
+    - restart monit
+  tags:
+    - monit
+
+- name: Make sure monit is started
+  sudo: true
+  service: name=monit state=restarted enabled=yes
+  tags:
+    - monit

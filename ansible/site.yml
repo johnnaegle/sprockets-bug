@@ -1,0 +1,2 @@
+# This is a hack to make vagrant work
+- include: playbooks/site/provision.yml

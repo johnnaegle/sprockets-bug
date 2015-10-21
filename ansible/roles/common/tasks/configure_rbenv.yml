@@ -1,0 +1,65 @@
+---
+- name: Make a diretory for a system RBENV - GAH
+  file:
+    path: /usr/local/rbenv
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+    mode: 0755
+    state: directory
+  tags:
+    - install_ruby
+
+- name: add rbenv repostitory
+  sudo: no
+  git:
+    repo: git://github.com/sstephenson/rbenv.git
+    dest: "/usr/local/rbenv"
+    accept_hostkey: yes
+  tags:
+    - install_ruby
+
+- name: add rbenv ruby plugins
+  sudo: no
+  git:
+    repo: git://github.com/sstephenson/ruby-build.git
+    dest:  "/usr/local/rbenv/plugins/ruby-build"
+    accept_hostkey: yes
+  tags:
+    - install_ruby
+
+- name: make rbenv profile
+  template:
+    src: rbenv.j2
+    dest: /etc/profile.d/rbenv.sh
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+    mode: 0600
+  tags:
+    - install_ruby
+
+- name: Determine if ruby is already installed
+  stat:
+    path: /usr/local/rbenv/versions/{{ ruby_version }}
+  register: ruby_version_stats
+  tags:
+    - install_ruby
+
+- name: Install ruby
+  sudo: no
+  shell: RBENV_ROOT=/usr/local/rbenv /usr/local/rbenv/bin/rbenv install -v {{ruby_version}}
+  when: ruby_version_stats.stat.exists == false
+  tags:
+    - install_ruby
+
+- name: set ruby version
+  sudo: no
+  shell: RBENV_ROOT=/usr/local/rbenv /usr/local/rbenv/bin/rbenv global {{ruby_version}}
+  tags:
+    - install_ruby
+
+- name: rbenv rehash
+  sudo: no
+  shell: RBENV_ROOT=/usr/local/rbenv /usr/local/rbenv/bin/rbenv rehash
+  tags:
+    - install_ruby
+

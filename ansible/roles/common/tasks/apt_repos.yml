@@ -1,0 +1,4 @@
+---
+- name: Add nginx ppa
+  sudo: true
+  apt_repository: repo='ppa:nginx/stable'

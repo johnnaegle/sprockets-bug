@@ -1,0 +1,34 @@
+---
+ansible_ssh_user: vagrant
+app_name: sprockets-bug
+app_path: /mnt/code/current
+shared_path: /mnt/code/shared
+ruby_version: 2.2.0
+
+packages:
+  - unzip
+  - update-notifier-common
+  - s3cmd
+  - git-core
+  - curl
+  - zlib1g-dev
+  - build-essential
+  - libssl-dev
+  - libreadline-dev
+  - libyaml-dev
+  - libsqlite3-dev
+  - sqlite3
+  - libxml2-dev
+  - libxslt1-dev
+  - libcurl4-openssl-dev
+  - libffi-dev
+  - nodejs # yes, we need this.  Its for execjs
+  - htop
+  - make
+  - libpq-dev
+  - ntp
+  - logrotate
+  - rsyslog-gnutls
+  - rsyslog
+  - monit
+

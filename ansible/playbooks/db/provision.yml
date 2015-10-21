@@ -1,0 +1,8 @@
+- name: Configure database server
+  hosts:
+    - sprockets-master
+  remote_user: root
+  roles:
+    - common
+    - db
+

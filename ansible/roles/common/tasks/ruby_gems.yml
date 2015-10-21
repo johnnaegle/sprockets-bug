@@ -1,0 +1,13 @@
+---
+# vagrant doesn't run bash - it doesn't source our .profile and we don't get rbenv so we can't use the gem module
+- name: install bundler
+  shell: bash -l -c 'source /etc/profile.d/rbenv.sh && gem install bundler'
+  sudo: no
+  tags:
+    - install_rails
+
+- name: Install Rails
+  shell: bash -l -c 'source /etc/profile.d/rbenv.sh && gem install rails'
+  sudo: no
+  tags:
+    - install_rails

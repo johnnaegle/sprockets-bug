@@ -1,0 +1,4 @@
+# handlers are only fired when certain tasks report changes, and are run at the end of each play
+- name: restart monit
+  sudo: true
+  service: name=monit state=restarted

@@ -1,0 +1,9 @@
+- name: Configure the application servers
+  hosts:
+    - sprockets-master
+  remote_user: root
+  sudo: true
+  roles:
+    - common
+    - app
+

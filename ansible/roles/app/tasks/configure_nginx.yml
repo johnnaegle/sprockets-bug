@@ -1,0 +1,70 @@
+---
+- name: Install nginx conf
+  sudo: true
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    mode: 0644
+    owner: root
+    group: root
+    backup: yes
+  notify:
+    - restart nginx
+  tags:
+    - nginx
+
+- name: Remove default nginx site
+  sudo: true
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify:
+    - restart nginx
+  tags:
+    - nginx
+
+
+- name: Configure nginx site for vagrant
+  sudo: true
+  template:
+    src: nginx-vagrant.j2
+    dest: /etc/nginx/sites-available/{{ app_name }}
+    owner: root
+    group: root
+    backup: yes
+    mode: 0644
+  notify:
+    - restart nginx
+  tags:
+    - nginx
+
+- name: Enable nginx site
+  sudo: true
+  file:
+    src: /etc/nginx/sites-available/{{ app_name }}
+    dest: /etc/nginx/sites-enabled/{{ app_name }}
+    state: link
+  notify:
+    - restart nginx
+  tags:
+    - nginx
+
+- name: Start nginx
+  sudo: true
+  service: name=nginx state=started enabled=yes
+  tags:
+    - nginx
+
+- name: Copy the nginx monit configuration
+  sudo: true
+  copy:
+    src: monit-nginx.conf
+    dest: /etc/monit/conf.d/monit-nginx.conf
+    owner: root
+    group: root
+    mode: 0755
+    backup: yes
+  notify:
+    - restart monit
+  tags:
+    - nginx

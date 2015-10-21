@@ -1,0 +1,11 @@
+# new relic notifications hung with logs of commits, this fixed it.
+---
+- name: Git Config - setup git pull
+  shell: git config --global alias.up pull —rebase
+  tags:
+    - git
+
+- name: Git Config - only push one branch
+  shell: git config --global push.default simple
+  tags:
+    - git
